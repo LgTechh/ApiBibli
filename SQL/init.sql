@@ -78,7 +78,7 @@ CREATE TABLE `EMPRUNT` (
                            `ID_Membre` integer NOT NULL,
                            `ID_Exemplaire` integer NOT NULL,
                            `Date_Emprunt` date DEFAULT (now()),
-                           `Date_Retour_Prevue` date NOT NULL,
+                           `Date_Retour_Prevue` date,
                            `Date_Retour_Effective` date,
                            FOREIGN KEY (`ID_Membre`) REFERENCES `MEMBRE` (`ID_Membre`),
                            FOREIGN KEY (`ID_Exemplaire`) REFERENCES `EXEMPLAIRE` (`ID_exemplaire`)

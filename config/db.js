@@ -13,7 +13,6 @@ export async function openDb() {
             driver: sqlite3.Database,
         });
         console.log("Base de données ouverte avec succès !");
-        await initDb(db);
         return db;
     } catch (error) {
         console.error("Erreur lors de l'ouverture de la base de données :", error);
