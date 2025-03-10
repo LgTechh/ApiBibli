@@ -10,6 +10,24 @@ export const livreService = {
         }
     },
 
+    getLivresByCategorie: async (categorieId) => {
+        try {
+            const livrecat = await livreRepository.getLivresByCategorie(categorieId);
+            return livrecat;
+        } catch (error) {
+            throw new Error('Erreur lors de la récupération des livres: ' + error.message);
+        }
+    },
+
+    getLivreByAuteur: async (auteurId) => {
+        try {
+            const livreAut = await livreRepository.getLivreByAuteur(auteurId);
+            return livreAut;
+        } catch (error) {
+            throw new Error('Erreur lors de la récupéation des livres:' + error.message);
+        }
+    },
+
     createLivre: async (livreData) => {
         if (!livreData.Titre || livreData.Titre.trim() === '') {
             throw new Error('Le titre du livre est obligatoire');

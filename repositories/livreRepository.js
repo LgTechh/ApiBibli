@@ -11,6 +11,42 @@ export const livreRepository = {
         }
     },
 
+    getLivresByCategorie: async (categorieId) => {
+        const db = await openDb();
+        try {
+            const numericCategorieId = Number(categorieId);
+            const livrecat = await db.all(`SELECT LIVRE.Titre, CATEGORIE.Nom, CATEGORIE.Description
+                FROM LIVRE
+                JOIN LIVRE_CATEGORIE ON LIVRE_CATEGORIE.ID_Livre = LIVRE.ID_Livre
+                JOIN CATEGORIE ON CATEGORIE.ID_categorie = LIVRE_CATEGORIE.ID_categorie
+                WHERE LIVRE_CATEGORIE.ID_categorie = ?`, [numericCategorieId]);
+
+            return livrecat;
+        } catch (error) {
+            throw new Error("Erreur lors de la récupération des livres par catégories")
+        }
+    },
+
+    getLivreByAuteur: async (auteurId) => {
+        const db = await openDb();
+        try {
+            const numericAuteurId = Number(auteurId);
+            console.log("Requête SQL pour l'auteur avec ID :", numericAuteurId);
+            const livreAut = await db.all(`SELECT AUTEUR.Nom, AUTEUR.Prenom, LIVRE.Titre
+                FROM AUTEUR
+                JOIN AUTEUR_Livre ON AUTEUR_Livre.ID_auteur = AUTEUR.ID_auteur
+                JOIN LIVRE ON AUTEUR_Livre.ID_Livre = LIVRE.ID_Livre
+                WHERE AUTEUR.ID_auteur = ?`, [numericAuteurId]);
+
+            console.log("Type de résultat:", typeof livreAut);
+            console.log("Est un tableau:", Array.isArray(livreAut));
+            console.log("Nombre d'éléments:", livreAut ? (Array.isArray(livreAut) ? livreAut.length : 1) : 0);
+            return livreAut;
+        } catch (error) {
+            throw new Error("Erreur lors de la récupération des livres par l'auteur");
+        }
+    },
+
 
     createLivre: async (livreData) => {
         const db = await openDb();

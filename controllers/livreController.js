@@ -12,6 +12,28 @@ export const livreController = {
         }
     },
 
+    getLivresByCategorie: async(req,res, categorieId) => {
+        try {
+            const livrecat = await livreService.getLivresByCategorie(categorieId);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(livrecat));
+        } catch (error) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, error: error.message }));
+        }
+    },
+
+    getLivreByAuteur: async(req,res, auteurId) => {
+        try {
+            const livreaut = await livreService.getLivreByAuteur(auteurId);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(livreaut));
+        } catch (error) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, error: error.message }));
+        }
+    },
+
     getLivreById: async (req, res, id) => {
         try {
             const livre = await livreService.getLivreById(id);
