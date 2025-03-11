@@ -3,9 +3,13 @@ import { livreService } from '../services/livreService.js';
 export const livreController = {
     getAllLivres: async (req, res) => {
         try {
-            const livres = await livreService.getAllLivres();
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify(livres));
+            const urlParams = new URLSearchParams(req.url.split('?')[1]);
+            const page = parseInt(urlParams.get('page'));
+            const limit = parseInt(urlParams.get('limit'));
+
+            const result = await livreService.getAllLivres(page, limit);
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify(result));
         } catch (error) {
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: false, error: error.message }));

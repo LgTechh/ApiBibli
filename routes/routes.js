@@ -16,7 +16,6 @@ export const handleRequest = async (req, res) => {
         console.log("Paramètre auteurId récupéré :", auteurId);
 
         if (categorieId) {
-            // Si un paramètre categorie est fourni, on appelle la méthode pour récupérer les livres par catégorie
             livreController.getLivresByCategorie(req, res, categorieId);
         } else if (auteurId){
             livreController.getLivreByAuteur(req, res, auteurId);

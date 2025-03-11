@@ -1,11 +1,16 @@
 import { openDb } from '../config/db.js';
 
 export const livreRepository = {
-    getAllLivres: async () => {
+    getAllLivres: async (limit, offset) => {
         const db = await openDb();
         try {
-            const livres = await db.all('SELECT * FROM LIVRE');
-            return livres;
+           let livres;
+           if (limit) {
+               livres = await db.all(`SELECT * FROM LIVRE LIMIT ? OFFSET ?`, [limit, offset]);
+           } else {
+               livres = await db.all(`SELECT * FROM LIVRE`);
+           }
+           return livres;
         } catch (error) {
             throw new Error('Erreur lors de la récupération des livres');
         }
@@ -113,16 +118,6 @@ export const livreRepository = {
             return { message: 'Livre supprimé avec succès' };
         } catch (error) {
             throw new Error('Erreur lors de la suppression du livre');
-        }
-    },
-
-    getLivrePage: async (limit = 10, offset = 0) => {
-        const db = await openDb();
-        try {
-            const pagination = await db.all(`SELECT * FROM LIVRES LIMIT ? OFFSET ?`, [limit, offset]);
-            return pagination;
-        } catch (error) {
-            throw new Error('Erreur dans la récupération de la pagination')
         }
     }
 };

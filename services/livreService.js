@@ -1,10 +1,18 @@
 import { livreRepository } from '../repositories/livreRepository.js';
 
 export const livreService = {
-    getAllLivres: async () => {
+    getAllLivres: async (page = 1, limit = 10) => {
         try {
-            const livres = await livreRepository.getAllLivres();
-            return livres;
+            const offset = (page - 1) * limit;
+            const livres = await livreRepository.getAllLivres(limit, offset);
+            const total = await livreRepository.getAllLivres();
+
+            return {
+                page,
+                limit,
+                total: total.length,
+                livres
+            };
         } catch (error) {
             throw new Error('Erreur lors de la récupération des livres: ' + error.message);
         }
