@@ -35,12 +35,23 @@ export const livreService = {
     },
 
     createLivre: async (livreData) => {
-        if (!livreData.Titre || livreData.Titre.trim() === '') {
-            throw new Error('Le titre du livre est obligatoire');
+        const validation = validerLivre(livreData);
+        if (!validation.estValide) {
+            throw new Error('Données de livre invalides: ' + validation.erreurs.join(', '));
         }
 
         try {
-           return await livreRepository.createLivre(livreData);
+            const newLivre = await livreRepository.createLivre(livreData);
+            return creerLivre(
+                newLivre.ID_Livre,
+                newLivre.ID_auteur,
+                newLivre.ID_categorie,
+                newLivre.Titre,
+                newLivre.ISBN,
+                newLivre.Annee_Publication,
+                newLivre.Nb_page,
+                newLivre.ID_editeur
+            );
         } catch (error) {
             throw new Error('Erreur lors de la création du livre: ' + error.message);
         }
@@ -48,20 +59,40 @@ export const livreService = {
 
     getLivreById: async (id) => {
         try {
-            return await livreRepository.getLivreById(id);
+            const livre = await livreRepository.getLivreById(id);
+            return creerLivre(
+                livre.ID_Livre,
+                livre.ID_auteur,
+                livre.ID_categorie,
+                livre.Titre,
+                livre.ISBN,
+                livre.Annee_Publication,
+                livre.Nb_page,
+                livre.ID_editeur
+            );
         } catch (error) {
             throw new Error('Erreur lors de la récupération du livre: ' + error.message);
         }
     },
 
     updateLivre: async (id, livreData) => {
-        // Logique de validation des données avant mise à jour
-        if (!livreData.Titre || livreData.Titre.trim() === '') {
-            throw new Error('Le titre du livre est obligatoire');
+        const validation = validerLivre(livreData);
+        if (!validation.estValide) {
+            throw new Error('Données de livre invalides: ' + validation.erreurs.join(', '));
         }
 
         try {
-            return await livreRepository.updateLivre(id, livreData);
+            const updatedLivre = await livreRepository.updateLivre(id, livreData);
+            return creerLivre(
+                updatedLivre.ID_Livre,
+                updatedLivre.ID_auteur,
+                updatedLivre.ID_categorie,
+                updatedLivre.Titre,
+                updatedLivre.ISBN,
+                updatedLivre.Annee_Publication,
+                updatedLivre.Nb_page,
+                updatedLivre.ID_editeur
+            );
         } catch (error) {
             throw new Error('Erreur lors de la mise à jour du livre: ' + error.message);
         }

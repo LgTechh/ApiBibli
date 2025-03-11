@@ -1,12 +1,8 @@
 import { livreService } from '../services/livreService.js';
 
 export const livreController = {
-    getAllLivres: async (req, res) => {
+    getAllLivres: async (req, res, page, limit) => {
         try {
-            const urlParams = new URLSearchParams(req.url.split('?')[1]);
-            const page = parseInt(urlParams.get('page'));
-            const limit = parseInt(urlParams.get('limit'));
-
             const result = await livreService.getAllLivres(page, limit);
             res.writeHead(200, {'Content-Type': 'application/json'});
             res.end(JSON.stringify(result));

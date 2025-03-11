@@ -13,6 +13,8 @@ export const handleRequest = async (req, res) => {
         const urlParams = new URLSearchParams(url.split('?')[1]); // Récupérer les paramètres de l'URL
         const categorieId = urlParams.get('categorie');  // Récupère la catégorie de l'URL (par exemple, ?categorie=1)
         const auteurId = urlParams.get('auteur');
+        const page = parseInt(urlParams.get('page'));
+        const limit = parseInt(urlParams.get('limit'));
         console.log("Paramètre auteurId récupéré :", auteurId);
 
         if (categorieId) {
@@ -20,7 +22,7 @@ export const handleRequest = async (req, res) => {
         } else if (auteurId){
            await livreController.getLivreByAuteur(req, res, auteurId);
         }else {
-           await livreController.getAllLivres(req, res);
+           await livreController.getAllLivres(req, res, page, limit);
         }
     }
     else if (url === '/api/livres' && method === 'POST') {
