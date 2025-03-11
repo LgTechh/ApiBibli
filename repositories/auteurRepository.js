@@ -1,11 +1,21 @@
 import { openDb } from '../config/db.js';
+import {creerAuteur} from "../models/Auteur.js";
 
 export const auteurRepository = {
     getAllAuteur: async () => {
         const db = await openDb();
         try {
-            const auteurs = await db.all('SELECT * FROM AUTEUR');
-            return auteurs;
+            const auteurData = await db.all(`SELECT * FROM AUTEUR`)
+            const auteurs = auteurData.map(auteur => creerAuteur(
+                auteur.ID_auteur,
+                auteur.Nom,
+                auteur.Prenom,
+                auteur.Nationalité,
+                auteur.Jour_de_naissance,
+                auteur.Mois_de_naissance,
+                auteur.Annee_de_naissance
+            ));
+            return auteurs
         } catch (error) {
             throw new Error('Erreur lors de la récupération des auteurs');
         }
@@ -22,11 +32,16 @@ export const auteurRepository = {
                 VALUES (?, ?, ?, ?, ?, ?,?)`,
                 [ID_auteur, Nom, Prenom, Nationalité, Jour_de_naissance, Mois_de_naissance, Annee_de_naissance]
             );
-
-            return {
-                ID_auteur: result.lastID,
-                ...auteurData
-            };
+            return creerAuteur(
+                result.lastID,
+                ID_auteur,
+                Nom,
+                Prenom,
+                Nationalité,
+                Jour_de_naissance,
+                Mois_de_naissance,
+                Annee_de_naissance
+            );
         } catch (error) {
             throw new Error("Erreur lors de la création de l'auteur");
         }
@@ -35,11 +50,19 @@ export const auteurRepository = {
     getAuteurById: async (id) => {
         const db = await openDb();
         try {
-            const auteur = await db.get('SELECT * FROM AUTEUR WHERE ID_auteur = ?', [id]);
-            if (!auteur) {
+            const auteurData = await db.get('SELECT * FROM AUTEUR WHERE ID_auteur = ?', [id]);
+            if (!auteurData) {
                 throw new Error('Auteur non trouvé');
             }
-            return auteur;
+            return creerAuteur(
+                auteurData.ID_auteur,
+                auteurData.Nom,
+                auteurData.Prenom,
+                auteurData.Nationalité,
+                auteurData.Jour_de_naissance,
+                auteurData.Mois_de_naissance,
+                auteurData.Annee_de_naissance
+            );
         } catch (error) {
             throw new Error("Erreur lors de la récupération de l'auteur");
         }
