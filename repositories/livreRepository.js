@@ -114,5 +114,15 @@ export const livreRepository = {
         } catch (error) {
             throw new Error('Erreur lors de la suppression du livre');
         }
+    },
+
+    getLivrePage: async (limit = 10, offset = 0) => {
+        const db = await openDb();
+        try {
+            const pagination = await db.all(`SELECT * FROM LIVRES LIMIT ? OFFSET ?`, [limit, offset]);
+            return pagination;
+        } catch (error) {
+            throw new Error('Erreur dans la récupération de la pagination')
+        }
     }
 };
