@@ -20,8 +20,7 @@ export const livreService = {
 
     getLivresByCategorie: async (categorieId) => {
         try {
-            const livrecat = await livreRepository.getLivresByCategorie(categorieId);
-            return livrecat;
+            return await livreRepository.getLivresByCategorie(categorieId);
         } catch (error) {
             throw new Error('Erreur lors de la récupération des livres: ' + error.message);
         }
@@ -29,8 +28,7 @@ export const livreService = {
 
     getLivreByAuteur: async (auteurId) => {
         try {
-            const livreAut = await livreRepository.getLivreByAuteur(auteurId);
-            return livreAut;
+            return await livreRepository.getLivreByAuteur(auteurId);
         } catch (error) {
             throw new Error('Erreur lors de la récupéation des livres:' + error.message);
         }
@@ -42,8 +40,7 @@ export const livreService = {
         }
 
         try {
-            const createdLivre = await livreRepository.createLivre(livreData);
-            return createdLivre;
+           return await livreRepository.createLivre(livreData);
         } catch (error) {
             throw new Error('Erreur lors de la création du livre: ' + error.message);
         }
@@ -51,8 +48,7 @@ export const livreService = {
 
     getLivreById: async (id) => {
         try {
-            const livre = await livreRepository.getLivreById(id);
-            return livre;
+            return await livreRepository.getLivreById(id);
         } catch (error) {
             throw new Error('Erreur lors de la récupération du livre: ' + error.message);
         }
@@ -65,8 +61,7 @@ export const livreService = {
         }
 
         try {
-            const updatedLivre = await livreRepository.updateLivre(id, livreData);
-            return updatedLivre;
+            return await livreRepository.updateLivre(id, livreData);
         } catch (error) {
             throw new Error('Erreur lors de la mise à jour du livre: ' + error.message);
         }
@@ -74,8 +69,7 @@ export const livreService = {
 
     deleteLivre: async (id) => {
         try {
-            const result = await livreRepository.deleteLivre(id);
-            return result;
+            return await livreRepository.deleteLivre(id);
         } catch (error) {
             throw new Error('Erreur lors de la suppression du livre: ' + error.message);
         }

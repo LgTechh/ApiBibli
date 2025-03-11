@@ -16,11 +16,11 @@ export const handleRequest = async (req, res) => {
         console.log("Paramètre auteurId récupéré :", auteurId);
 
         if (categorieId) {
-            livreController.getLivresByCategorie(req, res, categorieId);
+           await livreController.getLivresByCategorie(req, res, categorieId);
         } else if (auteurId){
-            livreController.getLivreByAuteur(req, res, auteurId);
+           await livreController.getLivreByAuteur(req, res, auteurId);
         }else {
-            livreController.getAllLivres(req, res);
+           await livreController.getAllLivres(req, res);
         }
     }
     else if (url === '/api/livres' && method === 'POST') {
@@ -37,7 +37,7 @@ export const handleRequest = async (req, res) => {
 
     else if (url.match(/^\/api\/livres\/([0-9]+)$/) && method === 'GET') {
         const id = url.split('/')[3];
-        livreController.getLivreById(req, res, parseInt(id));
+        await livreController.getLivreById(req, res, parseInt(id));
     }
     else if (url.match(/^\/api\/livres\/([0-9]+)$/) && method === 'PUT') {
         const id = url.split('/')[3];
@@ -63,7 +63,7 @@ export const handleRequest = async (req, res) => {
 
     //route pour emprunts
     else if (url === '/api/emprunts' && method === 'GET') {
-        empruntController.getAllEmprunt(req, res);
+        await empruntController.getAllEmprunt(req, res);
     }
     else if (url === '/api/emprunts' && method === 'POST') {
         parseRequestBody(req)
@@ -78,7 +78,7 @@ export const handleRequest = async (req, res) => {
     }
     else if (url.match(/^\/api\/emprunts\/([0-9]+)$/) && method === 'GET') {
         const id = url.split('/')[3];
-        empruntController.getEmpruntById(req, res, parseInt(id));
+       await empruntController.getEmpruntById(req, res, parseInt(id));
     }
     else if (url.match(/^\/api\/emprunts\/([0-9]+)$/) && method === 'PUT') {
         const id = url.split('/')[3];
@@ -104,7 +104,7 @@ export const handleRequest = async (req, res) => {
 
     //Route pour auteur
     else if (url === '/api/auteurs' && method === 'GET') {
-        auteurController.getAllAuteur(req, res);
+        await auteurController.getAllAuteur(req, res);
     }
     else if (url === '/api/auteurs' && method === 'POST') {
         parseRequestBody(req)
@@ -119,7 +119,7 @@ export const handleRequest = async (req, res) => {
     }
     else if (url.match(/^\/api\/auteurs\/([0-9]+)$/) && method === 'GET') {
         const id = url.split('/')[3];
-        auteurController.getAuteurById(req, res, parseInt(id));
+        await auteurController.getAuteurById(req, res, parseInt(id));
     }
     else if (url.match(/^\/api\/auteurs\/([0-9]+)$/) && method === 'PUT') {
         const id = url.split('/')[3];

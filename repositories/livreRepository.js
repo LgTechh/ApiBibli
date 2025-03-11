@@ -20,13 +20,12 @@ export const livreRepository = {
         const db = await openDb();
         try {
             const numericCategorieId = Number(categorieId);
-            const livrecat = await db.all(`SELECT LIVRE.Titre, CATEGORIE.Nom, CATEGORIE.Description
+            return await db.all(`SELECT LIVRE.Titre, CATEGORIE.Nom, CATEGORIE.Description
                 FROM LIVRE
                 JOIN LIVRE_CATEGORIE ON LIVRE_CATEGORIE.ID_Livre = LIVRE.ID_Livre
                 JOIN CATEGORIE ON CATEGORIE.ID_categorie = LIVRE_CATEGORIE.ID_categorie
                 WHERE LIVRE_CATEGORIE.ID_categorie = ?`, [numericCategorieId]);
 
-            return livrecat;
         } catch (error) {
             throw new Error("Erreur lors de la récupération des livres par catégories")
         }
@@ -82,7 +81,7 @@ export const livreRepository = {
             }
             return livre;
         } catch (error) {
-            throw new Error('Erreur lors de la récupération du livre');
+            throw new Error('Erreur lors de la récupération du livre' + error.message);
         }
     },
 
