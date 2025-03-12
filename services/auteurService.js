@@ -1,22 +1,31 @@
 import { auteurRepository } from '../repositories/auteurRepository.js';
+import {creerAuteur, validerAuteur} from "../models/Auteur.js";
 
 export const auteurService = {
     getAllAuteur: async () => {
         try {
-            const auteurs = await auteurRepository.getAllAuteur();
-            return auteurs;
+            return await auteurRepository.getAllAuteur();
         } catch (error) {
             throw new Error("Erreur lors de la récupération des auteurs:" + error.message);
         }
     },
 
     createAuteur: async (auteurData) => {
-        if (!auteurData.ID_auteur || !auteurData.Nom || !auteurData.Prenom || !auteurData.Annee_de_naissance) {
+        const validationAuteur = validerAuteur(auteurData);
+        if (!validationAuteur.estValide) {
             throw new Error("Les valeurs de l'auteur ne sont pas définies correctement");
         }
         try {
-            const createdAuteur = await auteurRepository.createAuteur(auteurData);
-            return createdAuteur;
+            const newAuteur = await auteurRepository.createAuteur(auteurData);
+            return creerAuteur(
+                newAuteur.ID_auteur,
+                newAuteur.Nom,
+                newAuteur.Prenom,
+                newAuteur.Nationalité,
+                newAuteur.Jour_de_naissance,
+                newAuteur.Mois_de_naissance,
+                newAuteur.Annee_de_naissance
+            )
         } catch (error) {
             throw new Error("Erreur lors de la création de l'auteur:" + error.message);
         }
@@ -25,14 +34,23 @@ export const auteurService = {
     getAuteurById: async (id) => {
         try {
             const auteur = await auteurRepository.getAuteurById(id);
-            return auteur;
+            return creerAuteur(
+                auteur.ID_auteur,
+                auteur.Nom,
+                auteur.Prenom,
+                auteur.Nationalité,
+                auteur.Jour_de_naissance,
+                auteur.Mois_de_naissance,
+                auteur.Annee_de_naissance
+            );
         } catch (error) {
             throw new Error("Erreur lors de la récupération de l'auteur:"  + error.message);
         }
     },
 
     updateAuteur: async (id, auteurData) => {
-        if (!auteurData.ID_auteur || !auteurData.Nom || !auteurData.Prenom) {
+        const validationAuteur = validerAuteur(auteurData);
+         if (!validationAuteur.estValide) {
             throw new Error("Les informations 'Nom' et 'Prenom' sont obligatoires");
         }
 
@@ -41,7 +59,15 @@ export const auteurService = {
             if (!updatedAuteur) {
                 throw new Error("Aucun auteur trouvé avec cet ID");
             }
-            return updatedAuteur;
+            return creerAuteur(
+                updatedAuteur.ID_auteur,
+                updatedAuteur.Nom,
+                updatedAuteur.Prenom,
+                updatedAuteur.Nationalité,
+                updatedAuteur.Jour_de_naissance,
+                updatedAuteur.Mois_de_naissance,
+                updatedAuteur.Annee_de_naissance
+            );
         } catch (error) {
             throw new Error("Erreur lors de la mise à jour de l'auteur: " + error.message);
         }
@@ -49,8 +75,7 @@ export const auteurService = {
 
     deleteAuteur: async (id) => {
         try {
-            const result = await auteurRepository.deleteAuteur(id);
-            return result;
+            return await auteurRepository.deleteAuteur(id);
         } catch (error) {
             throw new Error("Erreur lors de la suppression de l'auteur: ' + error.message");
         }

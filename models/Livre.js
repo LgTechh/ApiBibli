@@ -14,14 +14,21 @@ export const validerLivre = (livre) => {
 
     if (!livre.Titre || livre.Titre.trim() === '') {
         erreurs.push("Le titre est requis.");
+    } else {
+        console.log("La vérification du titre à réussie ✅");
     }
+
 
     if (livre.Annee_Publication && isNaN(livre.Annee_Publication)) {
         erreurs.push("L'année de publication doit être un nombre.");
+    } else {
+        console.log("La vérification de l'année de publication est réussie ✅");
     }
 
-    if (this.Nb_page && (isNaN(this.Nb_page) || this.Nb_page <= 0)) {
+    if (livre.Nb_page && (isNaN(livre.Nb_page) || livre.Nb_page <= 0)) {
         erreurs.push("Le nombre de pages doit être un nombre positif.");
+    } else {
+        console.log("La vérification du nombre de page est réussie ✅");
     }
 
     return {

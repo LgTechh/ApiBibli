@@ -77,13 +77,21 @@ export const auteurRepository = {
                 `UPDATE AUTEUR 
                  SET ID_auteur = ?, Nom = ?, Prenom = ?, Nationalité = ?, Jour_de_naissance = ?, Mois_de_naissance = ?, Annee_de_naissance= ?
                  WHERE ID_auteur = ?`,
-                [ID_auteur, Nom, Prenom, Nationalité, Jour_de_naissance, Mois_de_naissance, Annee_de_naissance, id]
+                [ID_auteur, Nom, Prenom, Nationalité, Jour_de_naissance, Mois_de_naissance, Annee_de_naissance]
             );
 
             if (result.changes === 0) {
                 throw new Error('Auteur non trouvé ou aucune modification effectuée');
             }
-            return { ...auteurData, ID_auteur: id }; // crée un nouvel objet en combinant les deux
+            return creerAuteur(
+                ID_auteur,
+                Nom,
+                Prenom,
+                Nationalité,
+                Jour_de_naissance,
+                Mois_de_naissance,
+                Annee_de_naissance
+            );
         } catch (error) {
             throw new Error('Erreur lors de la mise à jour du livre');
         }

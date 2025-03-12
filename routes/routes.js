@@ -9,7 +9,14 @@ export const handleRequest = async (req, res) => {
     const method = req.method;
 
     // Routes pour les livres
-    if (url.startsWith('/api/livres') && method === 'GET') {
+    if (url.match(/^\/api\/livres\/([0-9]+)$/) && method === 'GET') {
+        console.log("Route spécifique détectée:", url);
+        const id = url.split('/')[3];
+        console.log("ID extrait:", id);
+        await livreController.getLivreById(req, res, parseInt(id));
+    }
+
+    else if (url.startsWith('/api/livres') && method === 'GET') {
         const urlParams = new URLSearchParams(url.split('?')[1]); // Récupérer les paramètres de l'URL
         const categorieId = urlParams.get('categorie');  // Récupère la catégorie de l'URL (par exemple, ?categorie=1)
         const auteurId = urlParams.get('auteur');
@@ -35,11 +42,6 @@ export const handleRequest = async (req, res) => {
                 res.writeHead(400, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ success: false, error: 'Erreur de traitement de la requête' }));
             });
-    }
-
-    else if (url.match(/^\/api\/livres\/([0-9]+)$/) && method === 'GET') {
-        const id = url.split('/')[3];
-        await livreController.getLivreById(req, res, parseInt(id));
     }
     else if (url.match(/^\/api\/livres\/([0-9]+)$/) && method === 'PUT') {
         const id = url.split('/')[3];

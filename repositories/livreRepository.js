@@ -174,7 +174,7 @@ export const livreRepository = {
     updateLivre: async (id, livreData) => {
         const db = await openDb();
         try {
-            const {ID_auteur, ID_categorie, Titre, ISBN, Annee_Publication, Nb_page, ID_editeur} = livreData;
+            const {ID_Livre, ID_auteur, ID_categorie, Titre, ISBN, Annee_Publication, Nb_page, ID_editeur} = livreData;
 
             const result = await db.run(
                 `UPDATE LIVRE
@@ -195,7 +195,7 @@ export const livreRepository = {
 
             // Retourner un livre correctement formaté
             return creerLivre(
-                id,
+                ID_Livre,
                 ID_auteur,
                 ID_categorie,
                 Titre,

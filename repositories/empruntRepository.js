@@ -1,11 +1,19 @@
 import { openDb } from '../config/db.js';
+import {creerEmprunt} from "../models/Emprunt.js";
 
 export const empruntRepository = {
     getAllEmprunt: async () => {
         const db = await openDb();
         try {
-            const emprunts = await db.all('SELECT * FROM EMPRUNT');
-            return emprunts;
+            const empruntData = await db.all('SELECT * FROM EMPRUNT');
+            return empruntData.map(emprunt => creerEmprunt(
+                emprunt.ID_Emprunt,
+                emprunt.ID_Membre,
+                emprunt.ID_Exemplaire,
+                emprunt.Date_Emprunt,
+                emprunt.Date_Retour_Prevue,
+                emprunt.Date_Retour_Effective
+            ));
         } catch (error) {
             throw new Error('Erreur lors de la récupération des livres');
         }
@@ -23,10 +31,15 @@ export const empruntRepository = {
                 [ID_Emprunt, ID_Membre, ID_Exemplaire, Date_Emprunt, Date_Retour_Prevue, Date_Retour_Effective]
             );
 
-            return {
-                ID_Emprunt: result.lastID,
-                ...empruntData
-            };
+            return creerEmprunt(
+                result.lastID,
+                ID_Emprunt,
+                ID_Membre,
+                ID_Exemplaire,
+                Date_Emprunt,
+                Date_Retour_Prevue,
+                Date_Retour_Effective
+            );
         } catch (error) {
             throw new Error('Erreur lors de la création du livre');
         }
@@ -35,11 +48,18 @@ export const empruntRepository = {
     getEmpruntById: async (id) => {
         const db = await openDb();
         try {
-            const emprunt = await db.get('SELECT * FROM EMPRUNT WHERE ID_Emprunt = ?', [id]);
-            if (!emprunt) {
+            const empruntData = await db.get('SELECT * FROM EMPRUNT WHERE ID_Emprunt = ?', [id]);
+            if (!empruntData) {
                 throw new Error('Livre non trouvé');
             }
-            return emprunt;
+            return creerEmprunt(
+                empruntData.ID_Emprunt,
+                empruntData.ID_Membre,
+                empruntData.ID_Exemplaire,
+                empruntData.Date_Emprunt,
+                empruntData.Date_Retour_Prevue,
+                empruntData.Date_Retour_Effective
+            )
         } catch (error) {
             throw new Error('Erreur lors de la récupération du livre');
         }
@@ -60,7 +80,14 @@ export const empruntRepository = {
             if (result.changes === 0) {
                 throw new Error('Livre non trouvé ou aucune modification effectuée');
             }
-            return { ...empruntData, ID_Emprunt: id }; // crée un nouvel objet en combinant les deux
+            return creerEmprunt(
+                ID_Emprunt,
+                ID_Membre,
+                ID_Exemplaire,
+                Date_Emprunt,
+                Date_Retour_Prevue,
+                Date_Retour_Effective
+            );
         } catch (error) {
             throw new Error('Erreur lors de la mise à jour du livre');
         }
