@@ -167,7 +167,7 @@ export const livreRepository = {
                 livreData.ID_editeur
             );
         } catch (error) {
-            throw new Error('Erreur lors de la récupération du livre' + error.message);
+            throw error;
         }
     },
 
