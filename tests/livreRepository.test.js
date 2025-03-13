@@ -15,7 +15,12 @@ describe("Tests du repository des auteurs", () => {
         livreRepo = livreRepository;
     });
 
-    test("✅ Test: getAllAuteur", async () => {
+    afterEach(async () =>{
+        livreRepo = {};
+        await db.close();
+    });
+
+    test("✅ Test: getAllLivres - doit récupérer tous les livres", async () => {
         const livres = await livreRepo.getAllLivres();
         const filteredLivres = livres.filter(livre => livre.ID_Livre === 1);
 
@@ -161,4 +166,5 @@ describe("Tests du repository des auteurs", () => {
             expect(error.message).toBe("Livre non trouvé");
         }
     });
+
 });

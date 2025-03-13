@@ -1,4 +1,5 @@
 import sqlite3 from 'sqlite3';
+import { promise as fs } from 'fs';
 import path from 'path';
 import { copyFileSync } from 'fs';
 
@@ -27,7 +28,6 @@ const copyDatabase = () => {
 export const resetDbTest = () => {
     try {
         copyDatabase();  // Copier la base de données
-        console.log("Base de données de test réinitialisée");
     } catch (error) {
         console.error("Erreur lors de la réinitialisation de la base de données de test:", error);
     }

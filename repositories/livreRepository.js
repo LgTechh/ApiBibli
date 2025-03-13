@@ -78,7 +78,6 @@ export const livreRepository = {
         const db = await openDb();
         try {
             const numericAuteurId = Number(auteurId);
-            console.log("Requête SQL pour l'auteur avec ID :", numericAuteurId);
             const livresData = await db.all(`SELECT LIVRE.ID_Livre,
                                                     LIVRE.ID_auteur,
                                                     LIVRE.ID_categorie,
@@ -94,11 +93,6 @@ export const livreRepository = {
                                                       JOIN LIVRE ON AUTEUR_Livre.ID_Livre = LIVRE.ID_Livre
                                              WHERE AUTEUR.ID_auteur = ?`, [numericAuteurId]);
 
-            console.log("Type de résultat:", typeof livresData);
-            console.log("Est un tableau:", Array.isArray(livresData));
-            console.log("Nombre d'éléments:", livresData ? (Array.isArray(livresData) ? livresData.length : 1) : 0);
-
-            // On retourne un format enrichi avec les infos d'auteur
             return livresData.map(livre => ({
                 ...creerLivre(
                     livre.ID_Livre,

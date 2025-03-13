@@ -77,8 +77,6 @@ export const auteurRepository = {
                 throw new Error('Auteur non trouvé');
             }
 
-            console.log("auteur existant:", auteurExist);
-            console.log("Nouvelles données:", auteurData);
 
             const result = await db.run(
                 `UPDATE AUTEUR 

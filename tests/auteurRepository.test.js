@@ -14,9 +14,12 @@ describe("Tests du repository des auteurs", () => {
         db = await openDb();
         auteurRepo = auteurRepository;
     });
+    afterEach(async () =>{
+        auteurRepo = {};
+        await db.close();
+    });
 
-
-    test("✅ Test: getAllAuteur", async () => {
+    test("✅ Test: getAllAuteur - doit récupérer tous les auteurs", async () => {
         const auteurs = await auteurRepo.getAllAuteur();
         const filteredAuteurs = auteurs.filter(auteur => auteur.ID_auteur === 1);
 
@@ -95,4 +98,6 @@ describe("Tests du repository des auteurs", () => {
             expect(error.message).toBe("Auteur non trouvé");
         }
     });
+
+
 });

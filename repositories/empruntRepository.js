@@ -41,7 +41,7 @@ export const empruntRepository = {
                 Date_Retour_Effective
             );
         } catch (error) {
-            throw new Error('Erreur lors de la création du livre');
+            throw new Error("Erreur lors de la création du l'emprunt");
         }
     },
 
@@ -61,7 +61,7 @@ export const empruntRepository = {
                 empruntData.Date_Retour_Effective
             )
         } catch (error) {
-            throw new Error('Erreur lors de la récupération du livre');
+            throw error;
         }
     },
 
@@ -99,11 +99,11 @@ export const empruntRepository = {
             const result = await db.run('DELETE FROM EMPRUNT WHERE ID_Emprunt = ?', [id]);
 
             if (result.changes === 0) {
-                throw new Error('Livre non trouvé');
+                throw new Error('emprunt non trouvé');
             }
-            return { message: 'Livre supprimé avec succès' };
+            return { message: 'emprunt supprimé avec succès' };
         } catch (error) {
-            throw new Error('Erreur lors de la suppression du livre');
+            throw new Error("Erreur lors de la suppression de l'emprunt");
         }
     }
 };

@@ -13,7 +13,6 @@ const getDbPath = () => {
 };
 
 export async function openDb() {
-    console.log("Tentative d'ouverture de la BDD");
     const dbPath = getDbPath();
 
     return open({
@@ -26,9 +25,7 @@ export async function initDb(db) {
     try {
         const sql = await readFile('SQL/init.sql', 'utf8');
         await db.exec(sql);
-        console.log("Base de données initialisée avec succès !");
     } catch (error) {
-        console.error("Erreur lors de l'initialisation de la base de données :", error);
         throw new Error("Failed to initialize database");
     }
 }
