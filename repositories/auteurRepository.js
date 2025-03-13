@@ -82,9 +82,9 @@ export const auteurRepository = {
 
             const result = await db.run(
                 `UPDATE AUTEUR 
-                 SET ID_auteur = ?, Nom = ?, Prenom = ?, Nationalité = ?, Jour_de_naissance = ?, Mois_de_naissance = ?, Annee_de_naissance= ?
-                 WHERE ID_auteur = ?`,
-                [ID_auteur, Nom, Prenom, Nationalité, Jour_de_naissance, Mois_de_naissance, Annee_de_naissance]
+             SET ID_auteur = ?, Nom = ?, Prenom = ?, Nationalité = ?, Jour_de_naissance = ?, Mois_de_naissance = ?, Annee_de_naissance = ?
+             WHERE ID_auteur = ?`,
+                [ID_auteur, Nom, Prenom, Nationalité, Jour_de_naissance, Mois_de_naissance, Annee_de_naissance, id]
             );
 
             console.log(result);
