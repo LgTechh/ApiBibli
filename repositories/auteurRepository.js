@@ -64,7 +64,7 @@ export const auteurRepository = {
                 auteurData.Annee_de_naissance
             );
         } catch (error) {
-            throw new Error("Erreur lors de la récupération de l'auteur");
+            throw error;
         }
     },
 
@@ -72,6 +72,13 @@ export const auteurRepository = {
         const db = await openDb();
         try {
             const { ID_auteur, Nom, Prenom, Nationalité, Jour_de_naissance, Mois_de_naissance, Annee_de_naissance } = auteurData;
+            const auteurExist = await db.get('SELECT * FROM AUTEUR WHERE ID_auteur = ?', [id]);
+            if (!auteurExist) {
+                throw new Error('Auteur non trouvé');
+            }
+
+            console.log("auteur existant:", auteurExist);
+            console.log("Nouvelles données:", auteurData);
 
             const result = await db.run(
                 `UPDATE AUTEUR 
@@ -80,6 +87,7 @@ export const auteurRepository = {
                 [ID_auteur, Nom, Prenom, Nationalité, Jour_de_naissance, Mois_de_naissance, Annee_de_naissance]
             );
 
+            console.log(result);
             if (result.changes === 0) {
                 throw new Error('Auteur non trouvé ou aucune modification effectuée');
             }
@@ -92,8 +100,10 @@ export const auteurRepository = {
                 Mois_de_naissance,
                 Annee_de_naissance
             );
+
         } catch (error) {
-            throw new Error('Erreur lors de la mise à jour du livre');
+            console.log("Erreur dans la mise à jour de l'auteur", error);
+            throw new Error("Erreur lors de la mise à jour de l'auteur");
         }
     },
 

@@ -3,21 +3,23 @@ import { open } from "sqlite";
 import path from "path";
 import { readFile } from "fs/promises";
 
-console.log('Chemin de la base de données :', path.resolve('./database.db'));
+console.log('Chemin de la base de données :', path.resolve('./Data/database.db'));
+
+const getDbPath = () => {
+    return process.env.NODE_ENV === "test"
+        ? path.resolve("./Data/database_test.db")
+        : path.resolve("./Data/database.db");
+
+};
 
 export async function openDb() {
-    console.log("Tentative d'ouverture de la base de données...");
-    try {
-        const db = await open({
-            filename: "./Data/database.db",
-            driver: sqlite3.Database,
-        });
-        console.log("Base de données ouverte avec succès !");
-        return db;
-    } catch (error) {
-        console.error("Erreur lors de l'ouverture de la base de données :", error);
-        throw new Error("Failed to open database");
-    }
+    console.log("Tentative d'ouverture de la BDD");
+    const dbPath = getDbPath();
+
+    return open({
+        filename: dbPath,
+        driver: sqlite3.Database,
+    });
 }
 
 export async function initDb(db) {
