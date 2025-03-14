@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3';
 import { promise as fs } from 'fs';
 import path from 'path';
-import { copyFileSync } from 'fs';
+import { copyFile } from 'fs/promises';
 
 /**
  * Ouvre la base de données de test.
@@ -16,18 +16,18 @@ export const openDb = () => {
 /**
  * Copie la base de données initiale dans la base de données de test.
  */
-const copyDatabase = () => {
+const copyDatabase = async () => {
     const sourceDbPath = path.resolve('./Data/database.db');
     const testDbPath = path.resolve('./Data/database_test.db');
-    copyFileSync(sourceDbPath, testDbPath);  // Copie du fichier
+    await copyFile(sourceDbPath, testDbPath);  // Copie du fichier
 };
 
 /**
  * Réinitialise la base de données de test pour revenir à son état initial.
  */
-export const resetDbTest = () => {
+export const resetDbTest = async () => {
     try {
-        copyDatabase();  // Copier la base de données
+        await copyDatabase();  // Copier la base de données
     } catch (error) {
         console.error("Erreur lors de la réinitialisation de la base de données de test:", error);
     }

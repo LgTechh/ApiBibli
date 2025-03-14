@@ -1,16 +1,16 @@
 import { describe, test, expect, beforeEach } from "vitest";
-import { livreRepository } from '../repositories/livreRepository.js';
-import { openDb, resetDbTest } from "../config/dbTest.js";
-import { logger } from "../utils/logger.js";
+import { livreRepository } from '../../repositories/livreRepository.js';
+import { openDb, resetDbTest } from "../../config/dbTest.js";
+import { logger } from "../../utils/logger.js";
 
 process.env.NODE_ENV = "test";
 
-describe("Tests du repository des auteurs", () => {
+describe("Tests du repository des auteurs", async () => {
     let db;
     let livreRepo;
+    await resetDbTest();
 
     beforeEach(async () => {
-        await resetDbTest();
         db = await openDb();
         livreRepo = livreRepository;
     });
