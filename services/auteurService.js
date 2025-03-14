@@ -51,7 +51,7 @@ export const auteurService = {
     updateAuteur: async (id, auteurData) => {
         const validationAuteur = validerAuteur(auteurData);
          if (!validationAuteur.estValide) {
-            throw new Error("Les informations 'Nom' et 'Prenom' sont obligatoires");
+            throw new Error("Des informations sont obligatoires");
         }
 
         try {
