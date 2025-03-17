@@ -18,8 +18,9 @@ export const validerLivre = (livre) => {
         console.log("La vérification du titre à réussie ✅");
     }
 
+    const dateAjour = new Intl.DateTimeFormat("fr-FR", { year: "numeric" }).format(new Date())
 
-    if (livre.Annee_Publication && isNaN(livre.Annee_Publication)) {
+    if (livre.Annee_Publication && isNaN(livre.Annee_Publication) && livre.Annee_Publication <= dateAjour) {
         erreurs.push("L'année de publication doit être un nombre.");
     } else {
         console.log("La vérification de l'année de publication est réussie ✅");
