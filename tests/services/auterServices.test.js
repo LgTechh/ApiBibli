@@ -41,6 +41,12 @@ describe("Tests du services des auteurs", async () => {
         auteurRepo.updateAuteur = async () => {
             throw new Error("Problème de validation des données");
         };
+        try {
+            await auteurServ.updateAuteur(1, {Nom: "Hugo", Prenom: "Victor"});
+        } catch (error) {
+            expect(error.message).toContain("Des informations sont obligatoires");
+            console.log("La vérification de la validation à réussie ✅")
+        }
 
         try {
             await auteurServ.updateAuteur(1, {ID_auteur:50, Nom: "Hugo", Prenom: "Victor", Annee_de_naissance: 1802 });
@@ -52,6 +58,12 @@ describe("Tests du services des auteurs", async () => {
     test("❌ createAuteur - doit renvoyer une erreur", async () => {
         auteurRepo.createAuteur = async () => {
             throw new Error("Erreur lors de la création de l'auteur")
+        };
+        try {
+            await auteurServ.createAuteur(1, {Nom: "Hugo", Prenom: "Victor"});
+        } catch (error) {
+            expect(error.message).toContain("Les valeurs de l'auteur ne sont pas définies correctement");
+            console.log("Vérifcation de la validation réussie ✅");
         }
 
         try {
@@ -73,4 +85,15 @@ describe("Tests du services des auteurs", async () => {
         }
     });
 
+    test("❌ deleteAuteur - doit renvoyer une erreur", async () => {
+        auteurRepo.deleteAuteur = async () => {
+            throw new Error("Erreur dans la requête");
+        }
+
+        try {
+            await auteurServ.deleteAuteur(2);
+        } catch (error) {
+            expect(error.message).toContain("Erreur lors de la suppression de l'auteur:");
+        }
+    })
 });
